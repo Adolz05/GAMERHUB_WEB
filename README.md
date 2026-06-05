@@ -75,7 +75,7 @@ El sistema está preparado para escalar con un backend relacional estructurado e
 
 ---
 <p align="center">Proyecto Final de Curso - Desarrollado para la comunidad gamer.</p>
-* **Curso:** 1º de Desarrollo de Aplicaciones Multiplataforma (**1DAM**)
+Curso: 1º de Desarrollo de Aplicaciones Multiplataforma (1DAM)
 
 ---
-<p align="center">Proyecto Final de Curso - Desarrollado con ❤️ para la comunidad gamer.</p>
+<p align="center">Proyecto Final de Curso - Desarrollado con Amor para la comunidad gamer.</p>
