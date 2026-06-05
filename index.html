@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Comunidades Gamers – Conecta y Mejora</title>
+  <meta name="description" content="Plataforma de comunidades gaming para conectar jugadores, organizar misiones y competir en rankings.">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0a0f1e;
+      --accent: #00e5ff;
+      --accent2: #7b2fff;
+      --green: #00e096;
+      --light: #f4f7ff;
+      --mid: #e8edf5;
+      --text: #1a1f33;
+      --muted: #6b7280;
+      --card-bg: #ffffff;
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body { font-family: var(--font-body); color: var(--text); background: #fff; overflow-x: hidden; }
+    h1,h2,h3,h4,h5 { font-family: var(--font-head); }
+
+    /* HEADER */
+    #header {
+      background: rgba(10,15,30,0.97);
+      backdrop-filter: blur(12px);
+      padding: 14px 0;
+      position: sticky; top: 0; z-index: 1000;
+      border-bottom: 1px solid rgba(0,229,255,0.15);
+    }
+    .sitename { font-family:var(--font-head); font-weight:800; font-size:1.4rem; color:#fff; margin:0; letter-spacing:-0.02em; }
+    .sitename span { color: var(--accent); }
+    #navmenu ul { list-style:none; margin:0; padding:0; display:flex; gap:6px; }
+    #navmenu ul li a { color:rgba(255,255,255,0.75); text-decoration:none; font-size:0.88rem; font-weight:500; padding:6px 14px; border-radius:20px; transition:all .2s; }
+    #navmenu ul li a:hover, #navmenu ul li a.active { color:var(--accent); background:rgba(0,229,255,0.1); }
+    .header-social-links a { color:rgba(255,255,255,0.5); margin-left:14px; font-size:1rem; transition:color .2s; text-decoration:none; }
+    .header-social-links a:hover { color:var(--accent); }
+    .mobile-nav-toggle { display:none; color:#fff; font-size:1.5rem; cursor:pointer; background:none; border:none; padding:0; }
+    @media(max-width:991px){
+      .mobile-nav-toggle { display:block; }
+      #navmenu { display:none; }
+      #navmenu.open { display:block; position:absolute; top:62px; left:0; right:0; background:rgba(10,15,30,0.98); padding:16px; border-top:1px solid rgba(0,229,255,0.1); }
+      #navmenu.open ul { flex-direction:column; gap:4px; }
+      .header-social-links { display:none; }
+    }
+
+    /* HERO */
+    #hero { min-height:100vh; background:var(--primary); display:flex; align-items:center; position:relative; overflow:hidden; }
+    #hero::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 60% 50% at 70% 50%, rgba(123,47,255,0.18) 0%, transparent 70%), radial-gradient(ellipse 40% 60% at 20% 80%, rgba(0,229,255,0.12) 0%, transparent 60%); }
+    .hero-grid { position:absolute; inset:0; background-image: linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px); background-size:60px 60px; }
+    .hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(0,229,255,0.1); border:1px solid rgba(0,229,255,0.3); color:var(--accent); font-size:0.78rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; padding:6px 14px; border-radius:20px; margin-bottom:24px; }
+    .hero-badge .dot { width:6px; height:6px; background:var(--accent); border-radius:50%; animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+    #hero h2 { font-size:clamp(2.2rem,5vw,3.8rem); font-weight:800; color:#fff; line-height:1.1; margin-bottom:20px; letter-spacing:-0.03em; }
+    #hero h2 em { font-style:normal; background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    #hero p.lead { color:rgba(255,255,255,0.65); font-size:1.1rem; line-height:1.7; margin-bottom:36px; max-width:520px; }
+    .cta-buttons { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:48px; }
+    .btn-primary-hero { background:linear-gradient(135deg,var(--accent),#00b8d9); color:var(--primary); font-weight:700; font-family:var(--font-head); padding:13px 28px; border-radius:8px; text-decoration:none; font-size:0.92rem; transition:transform .2s, box-shadow .2s; border:none; display:inline-block; }
+    .btn-primary-hero:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,229,255,0.35); color:var(--primary); }
+    .btn-outline-hero { background:transparent; color:rgba(255,255,255,0.8); font-weight:600; font-family:var(--font-head); padding:12px 28px; border-radius:8px; text-decoration:none; font-size:0.92rem; border:1px solid rgba(255,255,255,0.2); transition:all .2s; display:inline-block; }
+    .btn-outline-hero:hover { border-color:var(--accent); color:var(--accent); }
+    .hero-stats { display:flex; gap:36px; flex-wrap:wrap; }
+    .stat-item { display:flex; flex-direction:column; }
+    .stat-number { font-family:var(--font-head); font-size:2rem; font-weight:800; color:#fff; line-height:1; }
+    .stat-label { font-size:0.78rem; color:rgba(255,255,255,0.45); text-transform:uppercase; letter-spacing:0.06em; margin-top:4px; }
+
+    /* Hero feature cards */
+    .hero-features { display:flex; flex-direction:column; gap:12px; max-width:400px; width:100%; }
+    .feat-card { background:rgba(255,255,255,0.04); border:1px solid rgba(0,229,255,0.18); border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:16px; transition:all .25s; }
+    .feat-card:hover { background:rgba(0,229,255,0.07); transform:translateX(4px); }
+    .feat-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+    .feat-icon.c1 { background:rgba(0,229,255,0.15); color:var(--accent); }
+    .feat-icon.c2 { background:rgba(123,47,255,0.15); color:var(--accent2); }
+    .feat-icon.c3 { background:rgba(0,224,150,0.15); color:var(--green); }
+    .feat-icon.c4 { background:rgba(255,180,0,0.12); color:#f5a623; }
+    .feat-text h5 { font-size:0.88rem; font-weight:700; color:#fff; margin:0 0 2px; }
+    .feat-text p { font-size:0.74rem; color:rgba(255,255,255,0.5); margin:0; }
+
+    /* SECTIONS */
+    .section { padding:80px 0; }
+    .light-background { background:var(--light); }
+    .section-title { text-align:center; margin-bottom:52px; }
+    .section-title h2 { font-size:clamp(1.8rem,3vw,2.6rem); font-weight:800; letter-spacing:-0.03em; margin-bottom:14px; }
+    .title-shape { display:flex; justify-content:center; margin-bottom:16px; }
+    .title-shape svg { width:120px; color:var(--accent); opacity:0.6; }
+    .section-title p { color:var(--muted); max-width:580px; margin:0 auto; font-size:1rem; line-height:1.7; }
+    .section-category { display:inline-block; font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent); margin-bottom:10px; }
+
+    /* ABOUT */
+    .about-card { background:var(--card-bg); border-radius:20px; overflow:hidden; box-shadow:0 2px 32px rgba(0,0,0,0.07); }
+    .about-side { background:var(--primary); padding:48px 40px; height:100%; display:flex; flex-direction:column; justify-content:center; }
+    .about-side .subtitle { font-size:0.78rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:12px; }
+    .about-side h3 { font-size:1.7rem; color:#fff; margin-bottom:20px; line-height:1.25; }
+    .about-side p { color:rgba(255,255,255,0.65); line-height:1.8; font-size:0.95rem; }
+    .about-body { padding:48px 40px; }
+    .feature-list { list-style:none; padding:0; margin:0; }
+    .feature-list li { display:flex; align-items:flex-start; gap:10px; padding:8px 0; font-size:0.9rem; color:var(--text); border-bottom:1px solid var(--mid); }
+    .feature-list li:last-child { border-bottom:none; }
+    .feature-list li i { color:var(--accent); font-size:0.9rem; margin-top:3px; flex-shrink:0; }
+    @media(max-width:767px){ .about-body,.about-side{ padding:32px 24px; } }
+
+    /* DATA CARDS */
+    .data-card { background:var(--card-bg); border:1px solid var(--mid); border-radius:16px; padding:28px; height:100%; transition:all .25s; }
+    .data-card:hover { border-color:var(--accent); box-shadow:0 8px 28px rgba(0,229,255,0.1); transform:translateY(-3px); }
+    .data-card .dc-icon { font-size:1.8rem; margin-bottom:14px; display:block; }
+    .data-card h4 { font-size:1rem; font-weight:700; margin-bottom:14px; }
+    .data-card .field-tag { display:inline-block; background:var(--light); border:1px solid var(--mid); color:var(--text); font-size:0.72rem; font-weight:600; padding:3px 10px; border-radius:10px; margin:3px 2px; }
+
+    /* ROLES TABLE */
+    .roles-table { background:var(--card-bg); border-radius:16px; overflow:hidden; box-shadow:0 2px 24px rgba(0,0,0,0.06); border:1px solid var(--mid); }
+    .roles-table table { width:100%; border-collapse:collapse; }
+    .roles-table thead th { background:var(--primary); color:#fff; font-family:var(--font-head); font-size:0.82rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:16px 20px; text-align:center; }
+    .roles-table thead th:first-child { text-align:left; }
+    .roles-table tbody tr { border-bottom:1px solid var(--mid); transition:background .15s; }
+    .roles-table tbody tr:last-child { border-bottom:none; }
+    .roles-table tbody tr:hover { background:var(--light); }
+    .roles-table tbody td { padding:13px 20px; font-size:0.88rem; text-align:center; }
+    .roles-table tbody td:first-child { text-align:left; font-weight:600; }
+    .badge-yes { background:rgba(0,224,150,0.12); color:#059669; border-radius:20px; padding:3px 12px; font-size:0.75rem; font-weight:700; }
+    .badge-no { background:rgba(239,68,68,0.1); color:#dc2626; border-radius:20px; padding:3px 12px; font-size:0.75rem; font-weight:700; }
+
+    /* SERVICES */
+    .service-item { background:var(--card-bg); border-radius:16px; padding:32px 28px; border:1px solid var(--mid); height:100%; transition:all .25s; position:relative; overflow:hidden; }
+    .service-item::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:linear-gradient(180deg,var(--accent),var(--accent2)); opacity:0; transition:opacity .25s; }
+    .service-item:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,0.09); }
+    .service-item:hover::before { opacity:1; }
+    .service-item .icon { font-size:2rem; background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; display:block; margin-bottom:16px; }
+    .service-item h3 { font-size:1rem; font-weight:700; margin-bottom:10px; }
+    .service-item h3 a { color:var(--text); text-decoration:none; }
+    .service-item h3 a:hover { color:var(--accent); }
+    .service-item p { font-size:0.86rem; color:var(--muted); line-height:1.7; margin:0; }
+
+    /* CHARTS SECTION */
+    .chart-card { background:var(--card-bg); border-radius:16px; padding:28px; border:1px solid var(--mid); text-align:center; }
+    .chart-visual { height:120px; display:flex; align-items:flex-end; justify-content:center; gap:8px; margin:20px 0; }
+    .bar { border-radius:6px 6px 0 0; transition:height .5s ease; }
+    .chart-label { font-size:0.72rem; color:var(--muted); margin-top:8px; }
+
+    /* CONTACT */
+    .contact-form-card { background:var(--card-bg); border-radius:20px; padding:40px; box-shadow:0 4px 32px rgba(0,0,0,0.07); border:1px solid var(--mid); }
+    .contact-form-card .form-control { border:1px solid var(--mid); border-radius:10px; padding:12px 16px; font-size:0.9rem; font-family:var(--font-body); transition:border-color .2s; }
+    .contact-form-card .form-control:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(0,229,255,0.1); outline:none; }
+    .btn-submit { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; border-radius:10px; padding:13px; font-family:var(--font-head); font-weight:700; font-size:0.95rem; cursor:pointer; width:100%; transition:transform .2s, box-shadow .2s; }
+    .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,229,255,0.3); }
+    .contact-info-item { display:flex; align-items:flex-start; gap:16px; margin-bottom:24px; }
+    .contact-info-item .ci-icon { width:44px; height:44px; background:rgba(0,229,255,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:1.1rem; flex-shrink:0; }
+    .contact-info-item .ci-label { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); display:block; margin-bottom:3px; }
+    .contact-info-item .ci-value { font-weight:600; font-size:0.92rem; }
+    @media(max-width:767px){ .contact-form-card{ padding:24px; } }
+
+    /* FOOTER */
+    #footer { background:var(--primary); padding:40px 0 24px; color:rgba(255,255,255,0.5); }
+    #footer .sitename { color:#fff; font-size:1.2rem; }
+    #footer .sitename span { color:var(--accent); }
+    .footer-links a { color:rgba(255,255,255,0.5); text-decoration:none; font-size:0.85rem; transition:color .2s; margin:0 10px; }
+    .footer-links a:hover { color:var(--accent); }
+    .social-links a { color:rgba(255,255,255,0.4); font-size:1.1rem; margin:0 8px; transition:color .2s; text-decoration:none; }
+    .social-links a:hover { color:var(--accent); }
+
+    /* SCROLL TOP */
+    #scroll-top { position:fixed; bottom:28px; right:28px; width:44px; height:44px; background:var(--accent); color:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:1.2rem; opacity:0; transform:translateY(12px); transition:all .3s; z-index:999; }
+    #scroll-top.active { opacity:1; transform:translateY(0); }
+    #scroll-top:hover { background:var(--accent2); color:#fff; }
+
+    /* TIMELINE */
+    .resume-block { margin-bottom:56px; }
+    .resume-block > h2 { font-size:1.5rem; font-weight:800; margin-bottom:8px; padding-left:20px; border-left:3px solid var(--accent); }
+    .resume-block > p.lead { color:var(--muted); margin-bottom:32px; font-size:0.95rem; }
+    .timeline { position:relative; }
+    .timeline::before { content:''; position:absolute; left:200px; top:0; bottom:0; width:2px; background:linear-gradient(180deg,var(--accent),var(--accent2),transparent); opacity:0.3; }
+    .timeline-item { display:flex; align-items:flex-start; margin-bottom:36px; position:relative; }
+    .timeline-left { width:200px; flex-shrink:0; padding-right:32px; text-align:right; }
+    .timeline-left .company { font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:4px; }
+    .timeline-left .period { font-size:0.75rem; color:var(--accent); font-weight:600; }
+    .timeline-dot { width:14px; height:14px; background:var(--accent); border-radius:50%; border:3px solid #fff; box-shadow:0 0 0 2px var(--accent); flex-shrink:0; margin-top:4px; z-index:1; }
+    .timeline-right { flex:1; padding-left:28px; }
+    .timeline-right .position { font-size:1rem; font-weight:700; margin-bottom:8px; }
+    .timeline-right .description { font-size:0.88rem; color:var(--muted); line-height:1.7; }
+    @media(max-width:768px){ .timeline::before,.timeline-left,.timeline-dot{display:none;} .timeline-right{padding-left:0;} }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header id="header">
+    <div class="container-xl d-flex align-items-center justify-content-between">
+      <a href="#hero" class="text-decoration-none">
+        <h1 class="sitename">Gamer<span>Hub</span></h1>
+      </a>
+      <nav id="navmenu">
+        <ul>
+          <li><a href="#hero" class="active">Inicio</a></li>
+          <li><a href="#about">Descripción</a></li>
+          <li><a href="#datos">Datos</a></li>
+          <li><a href="#roles">Roles</a></li>
+          <li><a href="#formularios">Formularios</a></li>
+          <li><a href="#informes">Informes</a></li>
+          <li><a href="#contact">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="d-flex align-items-center gap-3">
+        <div class="header-social-links">
+          <a href="#"><i class="bi bi-github"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+          <a href="#"><i class="bi bi-envelope"></i></a>
+        </div>
+        <button class="mobile-nav-toggle" id="mobileToggle"><i class="bi bi-list"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section id="hero" class="hero section">
+      <div class="hero-grid"></div>
+      <div class="container position-relative">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="hero-badge"><span class="dot"></span>Proyecto Final · 1DAM</div>
+            <h2>Comunidades Gamers –<br><em>Conecta y Mejora</em></h2>
+            <p class="lead">Una plataforma que conecta jugadores, organiza misiones colaborativas y gestiona comunidades por videojuego. Rankings, logros y competiciones en un solo lugar.</p>
+            <div class="cta-buttons">
+              <a href="#about" class="btn-primary-hero">Ver el Proyecto</a>
+              <a href="#contact" class="btn-outline-hero">Contactar</a>
+            </div>
+            <div class="hero-stats">
+              <div class="stat-item">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Roles de usuario</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">5</span>
+                <span class="stat-label">Entidades de datos</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">24/7</span>
+                <span class="stat-label">Disponibilidad</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="hero-features">
+              <div class="feat-card">
+                <div class="feat-icon c1"><i class="bi bi-people"></i></div>
+                <div class="feat-text">
+                  <h5>Crear o unirse a comunidades</h5>
+                  <p>Agrupa jugadores por videojuego, nivel e intereses</p>
+                </div>
+              </div>
+              <div class="feat-card">
+                <div class="feat-icon c2"><i class="bi bi-lightning"></i></div>
+                <div class="feat-text">
+                  <h5>Misiones y eventos colaborativos</h5>
+                  <p>Organiza partidas, retos y competiciones internas</p>
+                </div>
+              </div>
+              <div class="feat-card">
+                <div class="feat-icon c3"><i class="bi bi-trophy"></i></div>
+                <div class="feat-text">
+                  <h5>Rankings y logros</h5>
+                  <p>Estadísticas, progreso y ranking global por juego</p>
+                </div>
+              </div>
+              <div class="feat-card">
+                <div class="feat-icon c4"><i class="bi bi-chat-dots"></i></div>
+                <div class="feat-text">
+                  <h5>Compartir estrategias</h5>
+                  <p>Consejos, trucos y experiencias entre jugadores</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about section light-background">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Descripción del Problema</h2>
+        <div class="title-shape">
+          <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg"><path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <p>Muchos jugadores no disponen de una comunidad organizada donde encontrar compañeros con los mismos intereses, horarios o nivel de experiencia.</p>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="about-card">
+          <div class="row g-0">
+            <div class="col-lg-5">
+              <div class="about-side">
+                <span class="subtitle">El problema actual</span>
+                <h3>Jugadores sin comunidad organizada</h3>
+                <p>Existen muchos videojuegos en línea que requieren cooperación entre jugadores para completar desafíos, misiones o subir de nivel.</p>
+                <p class="mt-3">Sin embargo, no existe una plataforma unificada donde encontrar compañeros con los mismos intereses, horarios compatibles y nivel de experiencia adecuado.</p>
+                <p class="mt-3">GamerHub resuelve esto creando un espacio centralizado para toda la comunidad gaming.</p>
+              </div>
+            </div>
+            <div class="col-lg-7">
+              <div class="about-body">
+                <span class="section-category">La solución – GamerHub</span>
+                <h3 class="mb-4" style="font-size:1.4rem;">La aplicación Comunidad Gamer permitirá a los usuarios:</h3>
+                <ul class="feature-list">
+                  <li><i class="bi bi-check-circle-fill"></i>Crear o unirse a comunidades organizadas por videojuego</li>
+                  <li><i class="bi bi-check-circle-fill"></i>Buscar otros jugadores con intereses o niveles similares</li>
+                  <li><i class="bi bi-check-circle-fill"></i>Organizar partidas, misiones o eventos colaborativos</li>
+                  <li><i class="bi bi-check-circle-fill"></i>Compartir consejos, estrategias y trucos</li>
+                  <li><i class="bi bi-check-circle-fill"></i>Llevar un seguimiento de logros, estadísticas y progreso</li>
+                  <li><i class="bi bi-check-circle-fill"></i>Visualizar rankings globales y crear equipos para competiciones internas</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DATOS -->
+    <section id="datos" class="section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Datos del Sistema</h2>
+        <div class="title-shape">
+          <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg"><path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <p>Las cinco entidades principales que gestiona la base de datos de la aplicación.</p>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+
+          <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="data-card">
+              <span class="dc-icon" style="color:var(--accent)"><i class="bi bi-person-circle"></i></span>
+              <h4>Usuarios</h4>
+              <span class="field-tag">Código usuario</span>
+              <span class="field-tag">Nombre</span>
+              <span class="field-tag">Email</span>
+              <span class="field-tag">Contraseña</span>
+              <span class="field-tag">País / Zona horaria</span>
+              <span class="field-tag">Juegos favoritos</span>
+              <span class="field-tag">Nivel / Rango</span>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="data-card">
+              <span class="dc-icon" style="color:var(--accent2)"><i class="bi bi-controller"></i></span>
+              <h4>Videojuegos</h4>
+              <span class="field-tag">Código del juego</span>
+              <span class="field-tag">Nombre</span>
+              <span class="field-tag">Descripción</span>
+              <span class="field-tag">Género</span>
+              <span class="field-tag">Plataforma (PC, PS5, Xbox…)</span>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="data-card">
+              <span class="dc-icon" style="color:var(--green)"><i class="bi bi-people-fill"></i></span>
+              <h4>Comunidades</h4>
+              <span class="field-tag">Código comunidad</span>
+              <span class="field-tag">Nombre</span>
+              <span class="field-tag">Descripción</span>
+              <span class="field-tag">Juego asociado</span>
+              <span class="field-tag">Administrador</span>
+              <span class="field-tag">Nº de miembros</span>
+              <span class="field-tag">Acceso: pública / privada</span>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="data-card">
+              <span class="dc-icon" style="color:#f5a623"><i class="bi bi-lightning-charge-fill"></i></span>
+              <h4>Misiones / Desafíos</h4>
+              <span class="field-tag">Código misión</span>
+              <span class="field-tag">Título</span>
+              <span class="field-tag">Descripción</span>
+              <span class="field-tag">Juego asociado</span>
+              <span class="field-tag">Nivel de dificultad</span>
+              <span class="field-tag">Fecha y hora</span>
+              <span class="field-tag">Jugadores inscritos</span>
+              <span class="field-tag">Estado: pendiente / completado</span>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-6" data-aos="fade-up" data-aos-delay="500">
+            <div class="data-card">
+              <span class="dc-icon" style="color:#e53e3e"><i class="bi bi-shield-fill"></i></span>
+              <h4>Roles y Permisos</h4>
+              <span class="field-tag">Usuario estándar</span>
+              <span class="field-tag">Moderador</span>
+              <span class="field-tag">Administrador</span>
+              <div style="margin-top:14px;font-size:0.83rem;color:var(--muted);line-height:1.8;">
+                Gestión de permisos: crear/eliminar comunidades, gestionar misiones, administrar usuarios, enviar mensajes y visualizar estadísticas.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ROLES -->
+    <section id="roles" class="section light-background">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Roles y Permisos</h2>
+        <div class="title-shape">
+          <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg"><path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <p>La aplicación distingue tres roles con diferentes niveles de acceso y permisos sobre el sistema.</p>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <!-- Rol cards -->
+        <div class="row g-4 mb-5">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="service-item">
+              <i class="bi bi-person icon"></i>
+              <h3><a href="#">Usuario Estándar</a></h3>
+              <p>Puede unirse a comunidades, participar en misiones y crear sus propios desafíos. Accede a rankings y comparte estrategias con la comunidad.</p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="service-item">
+              <i class="bi bi-shield-half icon"></i>
+              <h3><a href="#">Moderador</a></h3>
+              <p>Gestiona publicaciones, usuarios y contenido dentro de su comunidad. Puede eliminar misiones y comunidades. Supervisa el cumplimiento de normas.</p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="service-item">
+              <i class="bi bi-shield-fill-check icon"></i>
+              <h3><a href="#">Administrador</a></h3>
+              <p>Control total del sistema: comunidades, usuarios, permisos y configuración global. El único rol que puede cambiar permisos de otros usuarios.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Permissions table -->
+        <div class="roles-table" data-aos="fade-up" data-aos-delay="200">
+          <table>
+            <thead>
+              <tr>
+                <th>Permiso</th>
+                <th><i class="bi bi-person me-1"></i>Usuario</th>
+                <th><i class="bi bi-shield-half me-1"></i>Moderador</th>
+                <th><i class="bi bi-shield-fill-check me-1"></i>Admin</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Crear comunidades</td>
+                <td><span class="badge-yes">Sí</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+              </tr>
+              <tr>
+                <td>Eliminar comunidades</td>
+                <td><span class="badge-no">No</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+              </tr>
+              <tr>
+                <td>Crear misiones</td>
+                <td><span class="badge-yes">Sí</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+              </tr>
+              <tr>
+                <td>Eliminar misiones</td>
+                <td><span class="badge-no">No</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+              </tr>
+              <tr>
+                <td>Gestionar usuarios</td>
+                <td><span class="badge-no">No</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+              </tr>
+              <tr>
+                <td>Enviar mensajes / alertas</td>
+                <td><span class="badge-yes">Sí</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+              </tr>
+              <tr>
+                <td>Ver estadísticas / rankings</td>
+                <td><span class="badge-yes">Sí</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+              </tr>
+              <tr>
+                <td>Cambiar permisos</td>
+                <td><span class="badge-no">No</span></td>
+                <td><span class="badge-no">No</span></td>
+                <td><span class="badge-yes">Sí</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMULARIOS -->
+    <section id="formularios" class="section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Introducción de Datos</h2>
+        <div class="title-shape">
+          <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg"><path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <p>Formularios con validación de datos, campos obligatorios y confirmación antes de guardar cambios.</p>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row align-items-start">
+          <div class="col-lg-4 mb-5 mb-lg-0">
+            <span class="section-category">Formularios del sistema</span>
+            <h2 class="fw-bold mb-4" style="font-size:1.6rem; font-family:var(--font-head);">Gestión completa de datos en la plataforma</h2>
+            <p class="mb-4" style="color:var(--muted); font-size:0.95rem; line-height:1.8;">Todos los formularios cuentan con validación de datos (campos obligatorios, formatos correctos) y confirmación antes de guardar cambios.</p>
+          </div>
+          <div class="col-lg-8">
+            <div class="row g-4">
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="service-item">
+                  <i class="bi bi-people icon"></i>
+                  <h3><a href="#">Gestión de Comunidades</a></h3>
+                  <p>Crear, modificar o eliminar comunidades. Configurar nombre, descripción, juego asociado y nivel de acceso (pública/privada).</p>
+                </div>
+              </div>
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-item">
+                  <i class="bi bi-person-plus icon"></i>
+                  <h3><a href="#">Registro y Perfil</a></h3>
+                  <p>Registrar nuevos usuarios y editar su perfil: nombre, email, país, zona horaria, juegos favoritos y nivel o rango.</p>
+                </div>
+              </div>
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="service-item">
+                  <i class="bi bi-calendar-event icon"></i>
+                  <h3><a href="#">Misiones y Eventos</a></h3>
+                  <p>Crear y planificar misiones colaborativas: título, dificultad, fecha/hora, juego asociado y jugadores inscritos.</p>
+                </div>
+              </div>
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="service-item">
+                  <i class="bi bi-controller icon"></i>
+                  <h3><a href="#">Catálogo de Videojuegos</a></h3>
+                  <p>Añadir nuevos videojuegos a la base de datos: nombre, género (acción, MOBA, estrategia…) y plataforma compatible.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INFORMES -->
+    <section id="informes" class="section light-background">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Informes y Gráficos</h2>
+        <div class="title-shape">
+          <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg"><path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <p>El sistema genera información útil e incluye gráficos interactivos para visualizar el estado de la plataforma.</p>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <!-- Informes -->
+        <div class="resume-block" data-aos="fade-up">
+          <h2>Informes disponibles</h2>
+          <p class="lead">Extracción de información estructurada para analizar el estado de la comunidad.</p>
+          <div class="timeline">
+            <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+              <div class="timeline-left"><h4 class="company">Comunidades</h4><span class="period">Activas</span></div>
+              <div class="timeline-dot"></div>
+              <div class="timeline-right">
+                <h3 class="position">Lista de comunidades activas por videojuego</h3>
+                <p class="description">Consulta qué comunidades están en activo filtradas por cada videojuego de la base de datos.</p>
+              </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+              <div class="timeline-left"><h4 class="company">Usuarios</h4><span class="period">Ranking</span></div>
+              <div class="timeline-dot"></div>
+              <div class="timeline-right">
+                <h3 class="position">Usuarios más activos</h3>
+                <p class="description">Clasificación basada en el número de misiones completadas por cada jugador.</p>
+              </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
+              <div class="timeline-left"><h4 class="company">Eventos</h4><span class="period">Histórico</span></div>
+              <div class="timeline-dot"></div>
+              <div class="timeline-right">
+                <h3 class="position">Eventos organizados por período</h3>
+                <p class="description">Registro histórico de todos los eventos y misiones organizadas en un rango de fechas determinado.</p>
+              </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-up" data-aos-delay="400">
+              <div class="timeline-left"><h4 class="company">Rankings</h4><span class="period">Global</span></div>
+              <div class="timeline-dot"></div>
+              <div class="timeline-right">
+                <h3 class="position">Ranking global de jugadores</h3>
+                <p class="description">Clasificación de jugadores por juego o por comunidad, mostrando estadísticas y logros acumulados.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráficos visuales -->
+        <h3 style="font-size:1.4rem; font-weight:800; margin-bottom:28px; padding-left:20px; border-left:3px solid var(--accent2);">Gráficos del sistema</h3>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+            <div class="chart-card">
+              <i class="bi bi-bar-chart-fill" style="font-size:1.6rem; color:var(--accent);"></i>
+              <h5 style="font-size:0.92rem; font-weight:700; margin:12px 0 6px;">Actividad semanal/mensual</h5>
+              <div class="chart-visual" id="chartActivity">
+                <div class="bar" style="width:22px;height:40%;background:linear-gradient(180deg,var(--accent),#00b8d9);"></div>
+                <div class="bar" style="width:22px;height:65%;background:linear-gradient(180deg,var(--accent),#00b8d9);"></div>
+                <div class="bar" style="width:22px;height:50%;background:linear-gradient(180deg,var(--accent),#00b8d9);"></div>
+                <div class="bar" style="width:22px;height:80%;background:linear-gradient(180deg,var(--accent),#00b8d9);"></div>
+                <div class="bar" style="width:22px;height:60%;background:linear-gradient(180deg,var(--accent),#00b8d9);"></div>
+                <div class="bar" style="width:22px;height:95%;background:linear-gradient(180deg,var(--accent),#00b8d9);"></div>
+                <div class="bar" style="width:22px;height:70%;background:linear-gradient(180deg,var(--accent),#00b8d9);"></div>
+              </div>
+              <p class="chart-label">Actividad de jugadores por semana o mes</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+            <div class="chart-card">
+              <i class="bi bi-pie-chart-fill" style="font-size:1.6rem; color:var(--accent2);"></i>
+              <h5 style="font-size:0.92rem; font-weight:700; margin:12px 0 6px;">Distribución por nivel</h5>
+              <div style="position:relative;width:90px;height:90px;margin:16px auto;">
+                <svg viewBox="0 0 36 36" style="transform:rotate(-90deg);width:90px;height:90px;">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--mid)" stroke-width="3"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--accent2)" stroke-width="3" stroke-dasharray="35 65" stroke-dashoffset="0"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="40 60" stroke-dashoffset="-35"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--green)" stroke-width="3" stroke-dasharray="25 75" stroke-dashoffset="-75"/>
+                </svg>
+              </div>
+              <p class="chart-label">Distribución de usuarios por nivel</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+            <div class="chart-card">
+              <i class="bi bi-controller" style="font-size:1.6rem; color:var(--green);"></i>
+              <h5 style="font-size:0.92rem; font-weight:700; margin:12px 0 6px;">Juegos más populares</h5>
+              <div style="margin:16px 0;">
+                <div style="margin-bottom:8px;">
+                  <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);margin-bottom:3px;"><span>Acción / FPS</span><span>78%</span></div>
+                  <div style="background:var(--mid);border-radius:3px;height:5px;"><div style="width:78%;height:5px;background:var(--green);border-radius:3px;"></div></div>
+                </div>
+                <div style="margin-bottom:8px;">
+                  <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);margin-bottom:3px;"><span>MOBA / Estrategia</span><span>55%</span></div>
+                  <div style="background:var(--mid);border-radius:3px;height:5px;"><div style="width:55%;height:5px;background:var(--accent2);border-radius:3px;"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);margin-bottom:3px;"><span>RPG / Aventura</span><span>42%</span></div>
+                  <div style="background:var(--mid);border-radius:3px;height:5px;"><div style="width:42%;height:5px;background:var(--accent);border-radius:3px;"></div></div>
+                </div>
+              </div>
+              <p class="chart-label">Juegos más populares por género</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+            <div class="chart-card">
+              <i class="bi bi-graph-up-arrow" style="font-size:1.6rem; color:#f5a623;"></i>
+              <h5 style="font-size:0.92rem; font-weight:700; margin:12px 0 6px;">Evolución de miembros</h5>
+              <div class="chart-visual">
+                <div class="bar" style="width:14px;height:20%;background:linear-gradient(180deg,#f5a623,#e59000);"></div>
+                <div class="bar" style="width:14px;height:35%;background:linear-gradient(180deg,#f5a623,#e59000);"></div>
+                <div class="bar" style="width:14px;height:45%;background:linear-gradient(180deg,#f5a623,#e59000);"></div>
+                <div class="bar" style="width:14px;height:55%;background:linear-gradient(180deg,#f5a623,#e59000);"></div>
+                <div class="bar" style="width:14px;height:65%;background:linear-gradient(180deg,#f5a623,#e59000);"></div>
+                <div class="bar" style="width:14px;height:80%;background:linear-gradient(180deg,#f5a623,#e59000);"></div>
+                <div class="bar" style="width:14px;height:95%;background:linear-gradient(180deg,#f5a623,#e59000);"></div>
+              </div>
+              <p class="chart-label">Evolución del número de miembros</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Contacto</h2>
+        <div class="title-shape">
+          <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg"><path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <p>¿Tienes preguntas sobre el proyecto o quieres colaborar? Escríbenos y te respondemos lo antes posible.</p>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-5 align-items-start">
+          <div class="col-lg-5">
+            <span class="section-category">Información de contacto</span>
+            <h3 class="mt-2 mb-4" style="font-size:1.6rem;">Hablemos del proyecto</h3>
+            <p style="color:var(--muted);line-height:1.8;margin-bottom:36px;">Estamos desarrollando GamerHub, una plataforma gaming innovadora. Si eres inversor, colaborador o simplemente quieres saber más, contáctanos.</p>
+            <div class="contact-info-item">
+              <div class="ci-icon"><i class="bi bi-envelope-at"></i></div>
+              <div><span class="ci-label">Email</span><span class="ci-value">alejandro.dolz@empresa.com</span></div>
+            </div>
+            <div class="contact-info-item">
+              <div class="ci-icon"><i class="bi bi-geo-alt"></i></div>
+              <div><span class="ci-label">Ubicación</span><span class="ci-value">Valencia, España</span></div>
+            </div>
+            <div class="contact-info-item">
+              <div class="ci-icon"><i class="bi bi-github"></i></div>
+              <div><span class="ci-label">GitHub</span><span class="ci-value">github.com/alejandrodolz</span></div>
+            </div>
+            <div class="contact-info-item">
+              <div class="ci-icon"><i class="bi bi-mortarboard"></i></div>
+              <div><span class="ci-label">Formación</span><span class="ci-value">1º DAM · Desarrollo de Aplicaciones Multiplataforma</span></div>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="contact-form-card" data-aos="fade-up" data-aos-delay="300">
+              <h4 class="mb-4" style="font-size:1.2rem;">Enviar mensaje</h4>
+              <div class="row gy-3">
+                <div class="col-12 col-md-6">
+                  <input type="text" class="form-control" placeholder="Tu nombre" required>
+                </div>
+                <div class="col-12 col-md-6">
+                  <input type="email" class="form-control" placeholder="Tu email" required>
+                </div>
+                <div class="col-12">
+                  <input type="text" class="form-control" placeholder="Asunto" required>
+                </div>
+                <div class="col-12">
+                  <textarea class="form-control" rows="5" placeholder="Escribe tu mensaje..." required></textarea>
+                </div>
+                <div class="col-12">
+                  <button class="btn-submit" onclick="alert('Formulario de demostración. Configura el backend PHP para envío real.')">
+                    <i class="bi bi-send me-2"></i>Enviar mensaje
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="container">
+      <div class="text-center mb-3">
+        <h2 class="sitename">Gamer<span>Hub</span></h2>
+        <p style="font-size:0.82rem;margin-top:6px;">Comunidades Gamers – Conecta y Mejora · Alejandro Dolz · 1DAM</p>
+      </div>
+      <div class="footer-links text-center mb-3">
+        <a href="#hero">Inicio</a>
+        <a href="#about">Descripción</a>
+        <a href="#datos">Datos</a>
+        <a href="#roles">Roles</a>
+        <a href="#informes">Informes</a>
+        <a href="#contact">Contacto</a>
+      </div>
+      <div class="social-links text-center mb-3">
+        <a href="#"><i class="bi bi-github"></i></a>
+        <a href="#"><i class="bi bi-linkedin"></i></a>
+        <a href="#"><i class="bi bi-twitter-x"></i></a>
+        <a href="#"><i class="bi bi-envelope"></i></a>
+      </div>
+      <div class="text-center" style="font-size:0.75rem;border-top:1px solid rgba(255,255,255,0.08);padding-top:16px;margin-top:16px;">
+        <p>© 2025 GamerHub · Proyecto Final 1DAM · Plantilla basada en <a href="https://bootstrapmade.com/" style="color:var(--accent);text-decoration:none;">BootstrapMade EasyFolio</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top"><i class="bi bi-arrow-up-short"></i></a>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration:700, easing:'ease-out-cubic', once:true, offset:60 });
+
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navmenu = document.getElementById('navmenu');
+    mobileToggle.addEventListener('click', () => navmenu.classList.toggle('open'));
+    navmenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navmenu.classList.remove('open')));
+
+    const scrollTop = document.getElementById('scroll-top');
+    window.addEventListener('scroll', () => scrollTop.classList.toggle('active', window.scrollY > 300));
+    scrollTop.addEventListener('click', e => { e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); });
+
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('#navmenu a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.getAttribute('id'); });
+      navLinks.forEach(a => { a.classList.remove('active'); if (a.getAttribute('href') === '#' + current) a.classList.add('active'); });
+    });
+  </script>
+
+</body>
+</html>
